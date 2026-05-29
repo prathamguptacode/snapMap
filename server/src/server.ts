@@ -1,16 +1,27 @@
 import 'dotenv/config'
-import env from './config/env.js'
+import env from './config/env'
 import express, { type Request, type Response } from 'express'
-import errorHandler from './middleware/errorHandler.js'
+import errorHandler from './middlewares/errorHandler'
 import mongoose from 'mongoose'
+
 const app = express()
+
 app.use(express.json())
+
+
 
 app.get('/', (req: Request, res: Response) => {
   res.json({ message: 'hello world welcome to snapMap' })
 })
 
+
+
 app.use(errorHandler)
-const port = 8080;
-mongoose.connect(env.DB_URL).then(() => console.log("Connected to DB")).catch(() => console.log("DB CRASHED SOS"))
-app.listen(port, () => console.log(`Server on port ${port}`))
+
+
+mongoose.connect(env.DB_URL)
+  .then(() => console.log("Connected to DB"))
+  .catch((err) => console.log("DB CRASHED SOS", err))
+
+
+app.listen(env.PORT, () => console.log(`Server on port ${env.PORT}`))
